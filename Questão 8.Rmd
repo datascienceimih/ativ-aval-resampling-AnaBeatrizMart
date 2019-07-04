@@ -1,0 +1,102 @@
+```{r}
+install.packages("ISLR")
+install.packages("tidyverse")
+```
+
+
+```{r}
+library(ISLR)
+library(tidyverse)
+```
+
+8. We will now perform cross-validation on a simulated data set.
+(a) Generate a simulated data set as follows:
+> set.seed(1)
+> x=rnorm(100)
+> y=x-2*x^2+rnorm (100)
+In this data set, what is n and what is p? Write out the model
+used to generate the data in equation form.
+
+```{r}
+set.seed(1)
+y <- rnorm(100)
+x <- rnorm(100)
+y <- x - 2 * x^2 + rnorm(100)
+```
+
+(b) Create a scatterplot of X against Y . Comment on what you find.
+
+```{r}
+plot(x, y)
+```
+
+(c) Set a random seed, and then compute the LOOCV errors that
+result from fitting the following four models using least squares:
+5.4 Exercises 201
+i. Y = β0 + β1X +
+ii. Y = β0 + β1X + β2X2 +
+iii. Y = β0 + β1X + β2X2 + β3X3 +
+iv. Y = β0 + β1X + β2X2 + β3X3 + β4X4 + .
+Note you may find it helpful to use the data.frame() function
+to create a single data set containing both X and Y
+
+```{r}
+library(boot)
+set.seed(1)
+Data <- data.frame(x, y)
+fit.glm.1 <- glm(y ~ x)
+cv.glm(Data, fit.glm.1)$delta[1]
+```
+```{r}
+fit.glm.2 <- glm(y ~ poly(x, 2))
+cv.glm(Data, fit.glm.2)$delta[1]
+```
+```{r}
+fit.glm.3 <- glm(y ~ poly(x, 3))
+cv.glm(Data, fit.glm.3)$delta[1]
+```
+
+```{r}
+fit.glm.4 <- glm(y ~ poly(x, 4))
+cv.glm(Data, fit.glm.4)$delta[1]
+```
+
+(d) Repeat (c) using another random seed, and report your results.
+Are your results the same as what you got in (c)? Why?
+
+```{r}
+set.seed(10)
+fit.glm.1 <- glm(y ~ x)
+cv.glm(Data, fit.glm.1)$delta[1]
+```
+```{r}
+fit.glm.2 <- glm(y ~ poly(x, 2))
+cv.glm(Data, fit.glm.2)$delta[1]
+```
+
+```{r}
+fit.glm.3 <- glm(y ~ poly(x, 3))
+cv.glm(Data, fit.glm.3)$delta[1]
+```
+```{r}
+fit.glm.4 <- glm(y ~ poly(x, 4))
+cv.glm(Data, fit.glm.4)$delta[1]
+```
+
+(e) Which of the models in (c) had the smallest LOOCV error? Is
+this what you expected? Explain your answer.
+
+a relação entre “x” e “y” é quadrática
+
+(f) Comment on the statistical significance of the coefficient estimates that results from fitting each of the models in (c) using
+least squares. Do these results agree with the conclusions drawn
+based on the cross-validation results? Sim.
+
+```{r}
+summary(fit.glm.4)
+```
+
+
+
+
+
